@@ -1,5 +1,5 @@
-USE_CUDA = False  # True
-RESTORE = True  # False
+USE_CUDA = True  # True
+RESTORE = False  # False
 TEACHER_RATIO = 0.5
 MAX_LENGTH = 32
 TARGET_LENGTH=5

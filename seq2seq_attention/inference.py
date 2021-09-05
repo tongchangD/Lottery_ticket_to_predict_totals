@@ -73,13 +73,13 @@ def inference(sentence, language,MODEL_DIR,codersum):
     if config.USE_CUDA:
         decoder_input = decoder_input.cuda()
         decoder_context = decoder_context.cuda()
-
     decoded_words = []
 
     # Run through decoder
     for di in range(config.MAX_LENGTH):
         decoder_output, decoder_context, decoder_hidden, decoder_cell, _ = decoder(
             decoder_input, decoder_context, decoder_hidden, decoder_cell, encoder_outputs)
+
 
         # Choose top word from output
         topv, topi = decoder_output.data.topk(1)
@@ -88,8 +88,8 @@ def inference(sentence, language,MODEL_DIR,codersum):
             break
         else:
             decoded_words.append(language.index2word[ni.item()])
-
-        decoder_input = torch.LongTensor([[ni]])
+        # decoder_input = torch.LongTensor([[ni]]) # old 原始 是需要根据
+        decoder_input = torch.LongTensor([[di]])
         if config.USE_CUDA:
             decoder_input = decoder_input.cuda()
 

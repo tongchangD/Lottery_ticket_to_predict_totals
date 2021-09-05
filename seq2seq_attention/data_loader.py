@@ -95,4 +95,19 @@ class PairsLoader():
 
             for ix, row in enumerate(mask_batch):
                 row[:nonzeros[ix]] = 1
+            # print(input_batch, output_batch, mask_batch)
             yield input_batch, output_batch, mask_batch
+
+    def load_evl(self):
+        input_batch = []
+        output_batch = []
+        mask_batch = np.zeros([len(self.pairs), self.target_length])  #
+        for i in range(len(self.pairs)):
+            pair = self.load_single_pair()
+            input_indexes, output_indexes = self.indexes_from_pair(pair)
+            input_batch.append(self.pad_train_sentence(input_indexes))
+            output_batch.append(self.pad_traget_sentence(output_indexes))
+        nonzeros = np.array(list(map(lambda x: (x != 0).sum() + 1, np.array(output_batch))))
+        for ix, row in enumerate(mask_batch):
+            row[:nonzeros[ix]] = 1
+        return input_batch, output_batch, mask_batch
